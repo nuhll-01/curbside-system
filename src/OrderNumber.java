@@ -7,20 +7,27 @@ public class OrderNumber {
         super();
     }
 
-    protected void getNumber() { // Adds order numbers to the ArrayList.
+    protected void listOfNumbers() {
         ORDER_NUMBER.add(956487);
         ORDER_NUMBER.add(412835);
         ORDER_NUMBER.add(507898);
         ORDER_NUMBER.add(345511);
-        ORDER_NUMBER.add(658901);
-        ORDER_NUMBER.add(123456);
     }
 
-    public int getSize() {
+    public int size() {
         return ORDER_NUMBER.size();
     }
 
     public int getOrder(int index) {
+        if (index < 0 || index >= ORDER_NUMBER.size())
+            throw new IllegalArgumentException("invalid index");
         return ORDER_NUMBER.get(index);
+    }
+
+    public void listOfOrderNumbers() {
+        listOfNumbers();
+        for (Integer integer : ORDER_NUMBER) {
+            System.out.println("Order Number: " + integer);
+        }
     }
 }

@@ -1,4 +1,7 @@
-// Driver class for the curbside pickup program.
+/**
+ * Author: Erick Chavez
+ * Description: Simulating a text-based store curbside system
+ */
 public class CurbsidePickupDriver {
 
     /**
@@ -6,6 +9,7 @@ public class CurbsidePickupDriver {
      * @param args string array of  list of arguments
      */
     public static void main(String[] args) {
+        DatabaseManager.initializeDatabase();
         CurbsideSystem sys = new CurbsideSystem();
         sys.start();
     }

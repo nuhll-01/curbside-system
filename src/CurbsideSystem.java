@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.Contract;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -7,61 +9,80 @@ public class CurbsideSystem extends CustomerData {
     private Inventory inventory = new Inventory();
     private OrderNumber orderNumber = new OrderNumber();
     private CustomerData customerData = new CustomerData();
-    private boolean active = false; // the activate state of the program
 
-    int menuSelection;
+    int option = 0;
 
     public CurbsideSystem() {
         super();
     }
 
     /**
-     * Initialize the curbside system application
+     * Starts the curbside system application
      */
-    public void start() {
-        active = true;
-        menu();
+    public void start()  {
+        mainMenu();
     }
 
     /**
      *  The main menu of the program.
      */
-    public void menu() {
-        System.out.println("\nWelcome!");
-        if (!active) { throw new IllegalStateException("CRITICAL ERROR"); }
-        
-        System.out.println("\nMain Menu - Exit --> 1 | Search Order --> 2 | View Orders --> 3");
-        System.out.print("Selection: ");
-
-        menuSelection = scanner.nextInt();
-        switch (menuSelection) {
+    private void mainMenu() {
+        greetingMessage();
+        switch (getOption()) {
+            case 0:
+                terminate();
             case 1:
-                System.out.println("\nProgram terminated.");
-                exit();
-
-            case 2:
+                // TODO - implement 'search()' method
                 int orderNumber;
                 System.out.print("Enter Order Number: ");
                 orderNumber = scanner.nextInt();
                 search(orderNumber);
                 break;
-
-            case 3:
+            case 2:
                 System.out.println("List of Orders:\n");
                 listOfOrderNumbers();
                 break;
-
             default:
                 System.out.println("Invalid Command.");
         }
     }
 
     /**
-     *  A method to find the order and display the customer's details.
-     *
+     * Used for terminating the application
+     */
+    private void terminate() {
+        System.out.println("\nClosing Application");
+        exit();
+    }
+
+    /**
+     * A simple greeting message.
+     */
+    @Contract(pure = true)
+    private void greetingMessage() {
+        System.out.println("Curbside System Application");
+    }
+
+    /**
+     * Get the user selected option
+     * @return Menu option
+     */
+    private int getOption() {
+        int option = 0;
+        System.out.println("\nMenu:\n - Exit --> 0\n - Search --> 1\n - Overview --> 2");
+        System.out.print("\nOption: ");
+        option = scanner.nextInt();
+        return option;
+    }
+
+    /**
+     * A method to find the order and display the customer's details.
      * @param order The order to search for.
      */
     private void search(int order) {
+        // int orderNumber;
+        // System.out.print("Enter Order Number: ");
+
         importOrderNumbers();
         int orders = orderNumber.size();
         for (int i = 0; i < orders; i++) {
@@ -73,7 +94,7 @@ public class CurbsideSystem extends CustomerData {
     }
 
     /**
-     *  Accesses the entire data of order numbers into scope.
+     * Accesses the entire data of order numbers into scope.
      */
     private void importOrderNumbers() {
         orderNumber.listOfNumbers();

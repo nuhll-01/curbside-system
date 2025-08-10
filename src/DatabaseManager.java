@@ -19,18 +19,53 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Create a database table
+     * @param conn connection to the database
+     * @throws SQLException error-handling
+     */
     private static void createTables(Connection conn) throws SQLException {
-        String sql = """
+        /* initialize the 'orders' table with four columns */
+        String createQuery = """
                 CREATE TABLE IF NOT EXISTS orders (
-                    id TEXT PRIMARY KEY,
-                    customer_name TEXT NOT NULL,
-                    contents TEXT NOT NULL
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    customer_first_name TEXT NOT NULL,
+                    customer_last_name TEXT NOT NULL,
+                    item_description TEXT NOT NULL
                 );
                 """;
 
         try (Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-            System.out.println("✅ Orders table is ready.\n");
+            stmt.execute(createQuery);
+        }
+    }
+
+    /**
+     * Drop a table from the database - (use method with caution)
+     * @param conn connection to the database
+     * @throws SQLException error-handling
+     */
+    private static void dropTable(Connection conn) throws SQLException {
+        /* dropping database table */
+        String dropQuery = "DROP TABLE IF EXISTS orders";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute(dropQuery);
+        }
+    }
+
+    /**
+     * Insert a record to the database
+     * @param conn connection to the database
+     * @throws SQLException error-handling
+     */
+    private static void insert(Connection conn) throws SQLException {
+        /* inserting records */
+        String insertQuery = """
+             INSERT INTO orders (customer_first_name, customer_last_name, item_description)\s
+             VALUES ("Juan", "Dingo", "RTX-4080")
+           \s""";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute(insertQuery);
         }
     }
 }

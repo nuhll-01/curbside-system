@@ -20,17 +20,18 @@ public class CurbsideSystem extends CustomerData {
      * Starts the curbside system application
      */
     public void start()  {
-        mainMenu();
+        createDatabase();
+        menu();
     }
 
     /**
-     *  The main menu of the program.
+     *  Generates the main menu of the program.
      */
-    private void mainMenu() {
+    private void menu() {
         greetingMessage();
         switch (getOption()) {
             case 0:
-                terminate();
+                terminateApplication();
             case 1:
                 // TODO - implement 'search()' method
                 int orderNumber;
@@ -48,9 +49,26 @@ public class CurbsideSystem extends CustomerData {
     }
 
     /**
-     * Used for terminating the application
+     * Get the user selected option
+     * @return Menu option
      */
-    private void terminate() {
+    private int getOption() {
+        int option;
+        System.out.print("""
+                \nMenu
+                \t- Order Management
+                \t- Overview
+                \t- Exit
+                """);
+        System.out.print("Option: ");
+        option = scanner.nextInt();
+        return option;
+    }
+
+    /**
+     * Terminate the running program
+     */
+    private void terminateApplication() {
         System.out.println("\nClosing Application");
         exit();
     }
@@ -60,19 +78,7 @@ public class CurbsideSystem extends CustomerData {
      */
     @Contract(pure = true)
     private void greetingMessage() {
-        System.out.println("Curbside System Application");
-    }
-
-    /**
-     * Get the user selected option
-     * @return Menu option
-     */
-    private int getOption() {
-        int option = 0;
-        System.out.println("\nMenu:\n - Exit --> 0\n - Search --> 1\n - Overview --> 2");
-        System.out.print("\nOption: ");
-        option = scanner.nextInt();
-        return option;
+        System.out.println("Curbside Order Management System");
     }
 
     /**
@@ -110,6 +116,13 @@ public class CurbsideSystem extends CustomerData {
         customerData.displayCustomerDetails();
         inventory.displayDetails(index);
         System.out.println("\n========================================================================");
+    }
+
+    /**
+     * Initialize the order database
+     */
+    private void createDatabase() {
+        DatabaseManager.initializeDatabase();
     }
 
     private void listOfOrders() {

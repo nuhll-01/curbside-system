@@ -25,20 +25,15 @@ public class CurbsideSystem extends CustomerData {
     }
 
     /**
-     *  Generates the main menu of the program.
+     *  Display the main menu.
      */
     private void menu() {
         greetingMessage();
-        switch (getOption()) {
+        switch (mainSelection()) {
             case 0:
                 terminateApplication();
             case 1:
-                // TODO - implement 'search()' method
-                int orderNumber;
-                System.out.print("Enter Order Number: ");
-                orderNumber = scanner.nextInt();
-                search(orderNumber);
-                break;
+                OMM();
             case 2:
                 System.out.println("List of Orders:\n");
                 listOfOrderNumbers();
@@ -48,17 +43,67 @@ public class CurbsideSystem extends CustomerData {
         }
     }
 
+
+
+
+
+
+
     /**
-     * Get the user selected option
+     *  Display the order-management menu (OMM).
+     */
+    private void OMM() {
+        switch (ommSelection()) {
+            case 0:
+                mainSelection();
+            case 1:
+
+                // TODO - implement 'search()' method
+
+
+
+                int orderNumber;
+                System.out.print("Enter Order Number: ");
+                orderNumber = scanner.nextInt();
+                search(orderNumber);
+                break;
+
+
+
+
+
+            default:
+                System.out.println("Invalid Command.");
+        }
+    }
+
+    /**
+     * Get the user option for the main menu
      * @return Menu option
      */
-    private int getOption() {
+    private int mainSelection() {
         int option;
         System.out.print("""
                 \nMenu
-                \t- Order Management
-                \t- Overview
-                \t- Exit
+                \t- Order Management (1)
+                \t- Overview         (2)
+                \t- Exit             (0)
+                """);
+        System.out.print("Option: ");
+        option = scanner.nextInt();
+        return option;
+    }
+
+    /**
+     * Get the user option for the OMM
+     * @return Menu option
+     */
+    private int ommSelection() {
+        int option;
+        System.out.print("""
+                \nOrder-Management Menu
+                \t- Search Order     (1)
+                \t- Return           (0)
                 """);
         System.out.print("Option: ");
         option = scanner.nextInt();

@@ -1,11 +1,12 @@
 import org.jetbrains.annotations.Contract;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class CurbsideSystem extends CustomerData {
-    private Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
     private Inventory inventory = new Inventory();
     private OrderNumber orderNumber = new OrderNumber();
     private CustomerData customerData = new CustomerData();
@@ -19,21 +20,22 @@ public class CurbsideSystem extends CustomerData {
     /**
      * Starts the curbside system application
      */
-    public void start()  {
-        createDatabase();
+    public void start() throws SQLException {
         menu();
     }
 
     /**
      *  Display the main menu.
      */
-    private void menu() {
+    private void menu() throws SQLException {
         greetingMessage();
         switch (mainSelection()) {
             case 0:
-                terminateApplication();
+                scanner.close();
+                terminate();
             case 1:
                 OMM();
+                break;
             case 2:
                 System.out.println("List of Orders:\n");
                 listOfOrderNumbers();
@@ -43,42 +45,23 @@ public class CurbsideSystem extends CustomerData {
         }
     }
 
-
-
-
-
-
-
     /**
      *  Display the order-management menu (OMM).
      */
-    private void OMM() {
+    private void OMM() throws SQLException {
         switch (ommSelection()) {
             case 0:
-                mainSelection();
+                menu();
             case 1:
-
-                // TODO - implement 'search()' method
-
-
-
-                int orderNumber;
-                System.out.print("Enter Order Number: ");
-                orderNumber = scanner.nextInt();
-                search(orderNumber);
+                search();
                 break;
-
-
-
-
-
             default:
                 System.out.println("Invalid Command.");
         }
     }
 
     /**
-     * Get the user option for the main menu
+     * Handles the user option selection operation
      * @return Menu option
      */
     private int mainSelection() {
@@ -95,7 +78,7 @@ public class CurbsideSystem extends CustomerData {
     }
 
     /**
-     * Get the user option for the OMM
+     * Handles the user option selection operation
      * @return Menu option
      */
     private int ommSelection() {
@@ -110,38 +93,33 @@ public class CurbsideSystem extends CustomerData {
         return option;
     }
 
+
+
     /**
-     * Terminate the running program
+     * Find the customer's order number and display important details.
      */
-    private void terminateApplication() {
-        System.out.println("\nClosing Application");
-        exit();
+    private void search() throws SQLException {
+        System.out.print("Search Order Number: ");
+        String order_number = scanner.next();
+
+        // Operation #1 : Search for the ID
+        DatabaseManager.searchIDs(order_number);
+
+        // Operation #2 : Check if ID was found
+        // If found, display order summary
+        // if not found, continue
+
+
+
+
     }
 
     /**
-     * A simple greeting message.
+     * Generate a greeting message.
      */
     @Contract(pure = true)
     private void greetingMessage() {
         System.out.println("Curbside Order Management System");
-    }
-
-    /**
-     * A method to find the order and display the customer's details.
-     * @param order The order to search for.
-     */
-    private void search(int order) {
-        // int orderNumber;
-        // System.out.print("Enter Order Number: ");
-
-        importOrderNumbers();
-        int orders = orderNumber.size();
-        for (int i = 0; i < orders; i++) {
-            if (order == orderNumber.getOrder(i)) {
-                System.out.println("\nOrder Found!");
-                displayResults(i);
-            }
-        }
     }
 
     /**
@@ -164,24 +142,10 @@ public class CurbsideSystem extends CustomerData {
     }
 
     /**
-     * Initialize the order database
+     * Terminate the process
      */
-    private void createDatabase() {
-        DatabaseManager.initializeDatabase();
-    }
-
-    private void listOfOrders() {
-        importOrderNumbers();
-    }
-
-    public boolean checkLength(int input) {
-        String inputNumber = String.valueOf(input); // Converts the input to a String.
-        String inputLength = Integer.toString(inputNumber.length()); // Converts the length of the input to a String.
-        int inputLengthInt = Integer.parseInt(inputLength); // Converts the length of the input to an Integer.
-        return inputLengthInt != 6;
-    }
-
-    public void exit() {
+    private void terminate() {
+        System.out.println("\nClosing Application");
         System.exit(0);
     }
 }

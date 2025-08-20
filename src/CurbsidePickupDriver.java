@@ -10,6 +10,7 @@ public class CurbsidePickupDriver {
      */
     public static void main(String[] args) {
         CurbsideSystem sys = new CurbsideSystem();
+        DatabaseManager.initializeDatabase();
         sys.start();
     }
 }

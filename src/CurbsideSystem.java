@@ -101,17 +101,7 @@ public class CurbsideSystem extends CustomerData {
     private void search() throws SQLException {
         System.out.print("Search Order Number: ");
         String order_number = scanner.next();
-
-        // Operation #1 : Search for the ID
-        DatabaseManager.searchIDs(order_number);
-
-        // Operation #2 : Check if ID was found
-        // If found, display order summary
-        // if not found, continue
-
-
-
-
+        DatabaseManager.searchDatabase(order_number);
     }
 
     /**

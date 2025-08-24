@@ -18,7 +18,7 @@ public class CurbsideSystem extends CustomerData {
     }
 
     /**
-     * Starts the curbside system application
+     * Starts the curbside system application.
      */
     public void start() throws SQLException {
         menu();
@@ -50,10 +50,17 @@ public class CurbsideSystem extends CustomerData {
      */
     private void OMM() throws SQLException {
         switch (ommSelection()) {
+            // returning back to the main menu
             case 0:
                 menu();
+                break;
+            // searching for the order number
             case 1:
-                search();
+                System.out.print("Search Order Number: ");
+                String order_number = scanner.next();
+                if (search(order_number)) {
+                    System.out.println("\norder number found!");
+                }
                 break;
             default:
                 System.out.println("Invalid Command.");
@@ -61,7 +68,7 @@ public class CurbsideSystem extends CustomerData {
     }
 
     /**
-     * Handles the user option selection operation
+     * Handles the user option selection operation.
      * @return Menu option
      */
     private int mainSelection() {
@@ -78,7 +85,7 @@ public class CurbsideSystem extends CustomerData {
     }
 
     /**
-     * Handles the user option selection operation
+     * Handles the user option selection operation.
      * @return Menu option
      */
     private int ommSelection() {
@@ -93,15 +100,13 @@ public class CurbsideSystem extends CustomerData {
         return option;
     }
 
-
-
     /**
-     * Find the customer's order number and display important details.
+     * Executes a search against the database and returns results matching the given criteria.
+     * @param orderNumber the order number to search for.
+     * @return "true" if order number found, otherwise return "false"
      */
-    private void search() throws SQLException {
-        System.out.print("Search Order Number: ");
-        String order_number = scanner.next();
-        DatabaseManager.searchDatabase(order_number);
+    private boolean search(String orderNumber) throws SQLException {
+        return DatabaseManager.searchOrderNumber(orderNumber);
     }
 
     /**

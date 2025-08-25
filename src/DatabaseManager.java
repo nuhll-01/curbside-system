@@ -90,6 +90,30 @@ public class DatabaseManager {
     }
 
     /**
+     * Retrieves the last name of the customer by using the primary key as the identifier.
+     * @param primaryKey Used to identify the customer.
+     * @return The customer's last name or <code>null</code> if not found.
+     * @throws SQLException Error-Handling
+     */
+    public static String getLastName(String primaryKey) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(URL)) {
+            if (conn != null) {
+                String query = "SELECT customer_last_name FROM orders WHERE id = ?";
+                try  (PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setString(1, primaryKey);
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        if (rs.next()) {
+                            return rs.getString("customer_last_name");
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Create a database table
      * @param conn connection to the database
      * @throws SQLException Error-Handling

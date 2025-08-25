@@ -40,7 +40,7 @@ public class DatabaseManager {
 
                     // Move cursor to the next row of the data column
                     while (rs.next()) {
-                        // Retrieve 'id' from database (it's represented as an 'int')
+                        // Retrieve 'id' from database (represented as an int)
                         int order_number = rs.getInt("id");
 
                         String copy_order_number = String.valueOf(order_number);
@@ -49,16 +49,44 @@ public class DatabaseManager {
                             return true;
                         }
                     }
-                } catch (SQLException e) {
-                    throw new SQLException(e.getMessage());
                 }
             }
-        } catch (SQLException e) {
-            System.out.println("Error: Failed to Connect to database " + e.getMessage());
         }
-
         if (!found) { System.out.println("\nORDER NOT FOUND."); }
         return false;
+    }
+
+    /**
+     * Retrieves the first name of the customer by using the primary key as the identifier.
+     * @param primaryKey Used to identify the customer.
+     * @return The customer's first name or <code>null</code> if not found.
+     * @throws SQLException Error-Handling
+     */
+    public static String getFirstName(String primaryKey) throws SQLException {
+
+        // Establish a connection to the database
+        try (Connection conn = DriverManager.getConnection(URL)) {
+            if (conn != null) {
+
+                // Define the query with a placeholder '?'
+                String query = "SELECT customer_first_name FROM orders WHERE id = ?";
+
+                // Create a PreparedStatement object
+                try  (PreparedStatement stmt = conn.prepareStatement(query)) {
+                    // Set the user-provided value. The JDBC driver handles the escaping.
+                    stmt.setString(1, primaryKey);
+
+                    // Retrieve the first name from database (represented as a string)
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        if (rs.next()) {
+                            return rs.getString("customer_first_name");
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -79,9 +107,8 @@ public class DatabaseManager {
 
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(createQuery);
-        } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
         }
+
     }
 
     /**
@@ -94,8 +121,6 @@ public class DatabaseManager {
         String dropQuery = "DROP TABLE IF EXISTS orders";
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(dropQuery);
-        } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
         }
     }
 
@@ -112,8 +137,6 @@ public class DatabaseManager {
                 \s""";
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(insertQuery);
-        } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
         }
     }
 }

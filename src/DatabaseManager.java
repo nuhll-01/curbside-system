@@ -114,6 +114,32 @@ public class DatabaseManager {
     }
 
     /**
+     * Retrieves the customer's item by using the primary key as the identifier.
+     * @param primaryKey Used to identify the customer item.
+     * @return The customer's item or <code>null</code> if not found.
+     * @throws SQLException Error-Handling
+     */
+    public static String getItem(String primaryKey) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(URL)) {
+            if (conn != null) {
+                String query = "SELECT item_description FROM orders WHERE id = ?";
+                try  (PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setString(1, primaryKey);
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        if (rs.next()) {
+                            return rs.getString("item_description");
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Create a database table
      * @param conn connection to the database
      * @throws SQLException Error-Handling

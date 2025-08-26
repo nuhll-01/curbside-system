@@ -58,9 +58,18 @@ public class CurbsideSystem extends CustomerData {
             case 1:
                 System.out.print("Search Order Number: ");
                 String order_number = scanner.next();
+
+                // if the customer order was found, print the order summary
                 if (search(order_number)) {
-                    System.out.println("\norder number found!");
+                    System.out.println("\n\t\t\t\t\t --------------");
+                    System.out.println("\t\t\t\t\t| ORDER SUMMARY |");
+                    System.out.println("\t\t\t\t\t --------------\n");
+                    System.out.print("First Name: " + DatabaseManager.getFirstName(order_number));
+                    System.out.print("\t|\tLast Name: " + DatabaseManager.getLastName(order_number));
+                    System.out.println("\t|\tItem: " + DatabaseManager.getItem(order_number));
+
                 }
+
                 break;
             default:
                 System.out.println("Invalid Command.");

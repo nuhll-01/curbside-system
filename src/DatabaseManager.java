@@ -141,7 +141,7 @@ public class DatabaseManager {
 
     /**
      * Create a database table
-     * @param conn connection to the database
+     * @param conn connection to the target database
      * @throws SQLException Error-Handling
      */
     private static void createTables(Connection conn) throws SQLException {
@@ -151,14 +151,15 @@ public class DatabaseManager {
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     customer_first_name TEXT NOT NULL,
                     customer_last_name TEXT NOT NULL,
-                    item_description TEXT NOT NULL
+                    customer_phone_number INTEGER,
+                    item_description TEXT NOT NULL,
+                    quantity INTEGER
                 );
                 """;
 
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(createQuery);
         }
-
     }
 
     /**

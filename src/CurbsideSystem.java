@@ -7,11 +7,12 @@ import java.util.Scanner;
 
 public class CurbsideSystem extends CustomerData {
     public static Scanner scanner = new Scanner(System.in);
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+
     private Inventory inventory = new Inventory();
     private OrderNumber orderNumber = new OrderNumber();
     private CustomerData customerData = new CustomerData();
-
-    int option = 0;
 
     public CurbsideSystem() {
         super();
@@ -61,13 +62,19 @@ public class CurbsideSystem extends CustomerData {
 
                 // if the customer order was found, print the order summary
                 if (search(order_number)) {
-                    System.out.println("\n\t\t\t\t\t --------------");
-                    System.out.println("\t\t\t\t\t| ORDER SUMMARY |");
-                    System.out.println("\t\t\t\t\t --------------\n");
-                    System.out.print("First Name: " + DatabaseManager.getFirstName(order_number));
+                    LocalDateTime dateTime = LocalDateTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                    String formattedDate = dateTime.format(formatter);
+                    System.out.println(" ");
+                    System.out.println("""
+                            ╔═══════════════════╗
+                            ║   ORDER SUMMARY   ║
+                            ╚═══════════════════╝
+                            """);
+                    System.out.print("| First Name: " + DatabaseManager.getFirstName(order_number));
                     System.out.print("\t|\tLast Name: " + DatabaseManager.getLastName(order_number));
-                    System.out.println("\t|\tItem: " + DatabaseManager.getItem(order_number));
-
+                    System.out.println("\t|\tItem: " + DatabaseManager.getItem(order_number) + "\t|");
+                    System.out.println("\n" + formattedDate);
                 }
 
                 break;
@@ -82,8 +89,9 @@ public class CurbsideSystem extends CustomerData {
      */
     private int mainSelection() {
         int option;
+        System.out.print(ANSI_BLUE + "> " + ANSI_RESET);
         System.out.print("""
-                \nMenu
+                Menu
                 \t- Order Management (1)
                 \t- Overview         (2)
                 \t- Exit             (0)
@@ -99,8 +107,9 @@ public class CurbsideSystem extends CustomerData {
      */
     private int ommSelection() {
         int option;
+        System.out.print(ANSI_BLUE + "> " + ANSI_RESET);
         System.out.print("""
-                \nOrder-Management Menu
+                Order-Management Menu
                 \t- Search Order     (1)
                 \t- Return           (0)
                 """);

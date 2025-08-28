@@ -62,9 +62,6 @@ public class CurbsideSystem extends CustomerData {
 
                 // if the customer order was found, print the order summary
                 if (search(order_number)) {
-                    LocalDateTime dateTime = LocalDateTime.now();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-                    String formattedDate = dateTime.format(formatter);
                     System.out.println(" ");
                     System.out.println("""
                             ╔═══════════════════╗
@@ -74,9 +71,17 @@ public class CurbsideSystem extends CustomerData {
                     System.out.print("| First Name: " + DatabaseManager.getFirstName(order_number));
                     System.out.print("\t|\tLast Name: " + DatabaseManager.getLastName(order_number));
                     System.out.println("\t|\tItem: " + DatabaseManager.getItem(order_number) + "\t|");
-                    System.out.println("\n" + formattedDate);
-                }
 
+                    // TODO - Continue adding logic and/or new functionalities
+                    // Example feature: 'Release' option.
+                    // It should mark the order as "complete",
+                    // and should be "cleared" or deleted from the database.
+                    // The released order should be stored in a separate table in the database.
+                    // This tables keeps track of recently released orders until its erased.
+
+
+                    Time.getCurrentTime();
+                }
                 break;
             default:
                 System.out.println("Invalid Command.");
@@ -143,11 +148,9 @@ public class CurbsideSystem extends CustomerData {
     }
 
     private void displayResults(int index) {
-        LocalDateTime dateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String formattedDate = dateTime.format(formatter);
         System.out.println("\n============================ Order Summary =============================");
-        System.out.println("\nDate: " + formattedDate);
+        System.out.print("\nDate: ");
+        Time.getCurrentTime();
         System.out.println("Order Number: " + orderNumber.getOrder(index));
         customerData.displayCustomerDetails();
         inventory.displayDetails(index);

@@ -137,8 +137,6 @@ public class DatabaseManager {
         return null;
     }
 
-
-
     /**
      * Create a database table
      * @param conn connection to the target database
@@ -153,7 +151,8 @@ public class DatabaseManager {
                     customer_last_name TEXT NOT NULL,
                     customer_phone_number INTEGER,
                     item_description TEXT NOT NULL,
-                    quantity INTEGER
+                    quantity INTEGER,
+                    status TEXT NOT NULL
                 );
                 """;
 
@@ -183,8 +182,10 @@ public class DatabaseManager {
     private static void insertRecords(Connection conn) throws SQLException {
         // inserting records
         String insertQuery = """
-                  INSERT INTO orders (customer_first_name, customer_last_name, item_description)\s
-                  VALUES ("Alexander", "Jones", "32GB DDR5 RAM")
+                  INSERT INTO orders (customer_first_name, customer_last_name,\s
+                                      customer_phone_number, item_description,
+                                      quantity, status)\s
+                  VALUES ("Greg", "Long", 4144952518, "Microfiber Cloth", 2, "incomplete")
                 \s""";
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(insertQuery);

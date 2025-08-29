@@ -1,8 +1,6 @@
 import org.jetbrains.annotations.Contract;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class CurbsideSystem extends CustomerData {
@@ -77,7 +75,7 @@ public class CurbsideSystem extends CustomerData {
                     // It should mark the order as "complete",
                     // and should be "cleared" or deleted from the database.
                     // The released order should be stored in a separate table in the database.
-                    // This tables keeps track of recently released orders until its erased.
+                    // This table keeps track of recently released orders until its erased periodically.
 
 
                     Time.getCurrentTime();
@@ -131,6 +129,12 @@ public class CurbsideSystem extends CustomerData {
     private boolean search(String orderNumber) throws SQLException {
         return DatabaseManager.searchOrderNumber(orderNumber);
     }
+
+    private void release() {
+        System.out.println("Release Order Number (R)");
+    }
+
+
 
     /**
      * Generate a greeting message.

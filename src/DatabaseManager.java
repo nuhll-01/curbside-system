@@ -138,6 +138,24 @@ public class DatabaseManager {
     }
 
     /**
+     * Marks the status of an order as <i>"complete."</i>
+     * @param orderID Order to update.
+     * @throws SQLException Error-Handling
+     */
+    public static void updateStatus(String orderID) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(URL)) {
+            if (conn != null) {
+                String query = "UPDATE orders SET status = ? WHERE id = ?";
+                try  (PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setString(1, "complete");
+                    stmt.setString(2, orderID);
+                    stmt.executeUpdate();
+                }
+            }
+        }
+    }
+
+    /**
      * Create a database table
      * @param conn connection to the target database
      * @throws SQLException Error-Handling
@@ -185,7 +203,7 @@ public class DatabaseManager {
                   INSERT INTO orders (customer_first_name, customer_last_name,\s
                                       customer_phone_number, item_description,
                                       quantity, status)\s
-                  VALUES ("Greg", "Long", 4144952518, "Microfiber Cloth", 2, "incomplete")
+                  VALUES ("Ethan", "Nguyen", 3028461957, "2TB NVMe SSD", 1, "incomplete")
                 \s""";
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(insertQuery);

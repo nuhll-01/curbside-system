@@ -40,7 +40,7 @@ public class CurbsideSystem extends CustomerData {
                 listOfOrderNumbers();
                 break;
             default:
-                System.out.println("Invalid Command.");
+                System.out.println("Invalid Option.");
         }
     }
 
@@ -55,6 +55,7 @@ public class CurbsideSystem extends CustomerData {
                 break;
             // searching for the order number
             case 1:
+                int option;
                 System.out.print("Search Order Number: ");
                 String order_number = scanner.next();
 
@@ -69,16 +70,24 @@ public class CurbsideSystem extends CustomerData {
                     System.out.print("| First Name: " + DatabaseManager.getFirstName(order_number));
                     System.out.print("\t|\tLast Name: " + DatabaseManager.getLastName(order_number));
                     System.out.println("\t|\tItem: " + DatabaseManager.getItem(order_number) + "\t|");
-
-                    // TODO - Continue adding logic and/or new functionalities
-                    // Example feature: 'Release' option.
-                    // It should mark the order as "complete",
-                    // and should be "cleared" or deleted from the database.
-                    // The released order should be stored in a separate table in the database.
-                    // This table keeps track of recently released orders until its erased periodically.
-
-
-                    Time.getCurrentTime();
+                    System.out.print("""
+                        \n
+                        \t- Release Order    (1)
+                        \t- Return           (0)
+                        \n
+                        """);
+                    System.out.print("Option: ");
+                    option = scanner.nextInt();
+                    switch (option) {
+                        case 0:
+                            OMM();
+                            break;
+                        case 1:
+                            release(order_number);
+                            break;
+                        default:
+                            System.out.println("Invalid Option.");
+                    }
                 }
                 break;
             default:
@@ -130,11 +139,17 @@ public class CurbsideSystem extends CustomerData {
         return DatabaseManager.searchOrderNumber(orderNumber);
     }
 
-    private void release() {
-        System.out.println("Release Order Number (R)");
+    /**
+     * Marks the specified order as 'complete'.
+     * This is called when a customer provides their order number
+     * and an employee confirms the release for customer pickup.
+     * @param orderNumber the order to release
+     * @throws SQLException Error-Handling
+     */
+    private void release(String orderNumber) throws SQLException {
+        DatabaseManager.updateStatus(orderNumber);
+        Time.getCurrentTime();
     }
-
-
 
     /**
      * Generate a greeting message.

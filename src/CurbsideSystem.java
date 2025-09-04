@@ -69,6 +69,8 @@ public class CurbsideSystem extends CustomerData {
                             """);
                     System.out.print("| First Name: " + DatabaseManager.getFirstName(order_number));
                     System.out.print("\t|\tLast Name: " + DatabaseManager.getLastName(order_number));
+                    System.out.print("\t|\tPhone Number: " +
+                            FormatterUtils.formatNumber(DatabaseManager.getPhoneNumber(order_number)));
                     System.out.println("\t|\tItem: " + DatabaseManager.getItem(order_number) + "\t|");
                     System.out.print("""
                         \n
@@ -180,7 +182,7 @@ public class CurbsideSystem extends CustomerData {
      * Terminate the process
      */
     private void terminate() {
-        System.out.println("\nClosing Application");
+        System.out.println("\nClosing Application.");
         System.exit(0);
     }
 }

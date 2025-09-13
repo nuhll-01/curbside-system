@@ -78,6 +78,7 @@ public class CurbsideSystem extends CustomerData {
                         \t- Return           (0)
                         \n
                         """);
+                    Time.getCurrentTime();
                     System.out.print("Option: ");
                     option = scanner.nextInt();
                     switch (option) {
@@ -150,7 +151,6 @@ public class CurbsideSystem extends CustomerData {
      */
     private void release(String orderNumber) throws SQLException {
         DatabaseManager.updateStatus(orderNumber);
-        Time.getCurrentTime();
     }
 
     /**

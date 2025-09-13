@@ -138,17 +138,41 @@ public class DatabaseManager {
     }
 
     /**
-     * Marks the status of an order as <i>"complete."</i>
-     * @param orderID Order to update.
+     * Retrieves the customer's registered phone number by using the primary key as the identifier.
+     * @param primaryKey Used to identify the customer number.
+     * @return The customer phone number.
      * @throws SQLException Error-Handling
      */
-    public static void updateStatus(String orderID) throws SQLException {
+    public static int getPhoneNumber(String primaryKey) throws SQLException {
+        // Establish a connection to the database through the given URL
+        try (Connection conn = DriverManager.getConnection(URL)) {
+            if (conn != null) {
+                String query = "SELECT customer_phone_number FROM orders WHERE id = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setString(1, primaryKey);
+                    ResultSet rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        return rs.getInt("customer_phone_number");
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Marks the status of an order as <i>"complete."</i>
+     * @param primaryKey Used to identify the customer order.
+     * @throws SQLException Error-Handling
+     */
+    public static void updateStatus(String primaryKey) throws SQLException {
         try (Connection conn = DriverManager.getConnection(URL)) {
             if (conn != null) {
                 String query = "UPDATE orders SET status = ? WHERE id = ?";
                 try  (PreparedStatement stmt = conn.prepareStatement(query)) {
                     stmt.setString(1, "complete");
-                    stmt.setString(2, orderID);
+                    stmt.setString(2, primaryKey);
                     stmt.executeUpdate();
                 }
             }
